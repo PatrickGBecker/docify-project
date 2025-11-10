@@ -1,2 +1,0 @@
-[console_scripts]
-docify = docify_tool.cli:main
