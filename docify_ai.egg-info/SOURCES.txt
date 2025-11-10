@@ -9,7 +9,7 @@ docify_ai.egg-info/entry_points.txt
 docify_ai.egg-info/requires.txt
 docify_ai.egg-info/top_level.txt
 docify_tool/__init__.py
-docify_tool/cli-OG.py
+docify_tool/cli-new.py
 docify_tool/cli.py
 docify_tool/dataset_extractor.py
 docify_tool/generator.py

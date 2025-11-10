@@ -22,14 +22,14 @@ First, determine the project’s domain from the context. Possible domains inclu
 
 Then, generate a README optimized for that domain:
 
-1. **Project Title**: Clear and attractive.
+1. **Project Title**: The project title will always be the name of the root folder.
 2. **What It Is & Why It Exists (Description)**: A two to four sentence summary of the project.
 3. **What It Does (Key Features & Core Behaviors)**: Bullet points.
-3. **Where It Runs (Domain-Specific Sections)**:
+4. **Where It Runs (Domain-Specific Sections)**:
    - For **Web Dev** → Document endpoints, authentication, Document features, frontend/backend setup, environment variables.
-6. **How It's Configured**: Inputs that must be maintained manually. List necessary specifications and settings.
-7. **Who Can Edit (permissions)**: List of contributors/administrators with editing access, list of users without editing access.
-8. **What It Depends On (Technologies Used)**: List of plugins, frameworks, tools, and libraries which are necessary for the application to function as expected.
+5. **How It's Configured**: Inputs that must be maintained manually. List necessary specifications and settings.
+6. **Who Can Edit (permissions)**: List of contributors/administrators with editing access, list of users without editing access.
+7. **What It Depends On (Technologies Used)**: List of plugins, frameworks, tools, and libraries which are necessary for the application to function as expected.
 
 Here is the project context: 
 """
