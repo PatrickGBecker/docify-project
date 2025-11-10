@@ -22,7 +22,7 @@ First, determine the project’s domain from the context. Possible domains inclu
 
 Then, generate a README optimized for that domain:
 
-1. **Project Title**: The project title will always be the name of the root folder.
+1. **Project Title**: The project title will always be the name of the directory containing the README.md file.
 2. **What It Is & Why It Exists (Description)**: A two to four sentence summary of the project.
 3. **What It Does (Key Features & Core Behaviors)**: Bullet points.
 4. **Where It Runs (Domain-Specific Sections)**:
