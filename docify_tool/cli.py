@@ -1,6 +1,6 @@
 import os
-import argparse
 import json
+import argparse 
 
 from .helper import clean_fenced_content
 from .dataset_extractor import extract_and_summarize
@@ -181,12 +181,13 @@ export OPENAI_API_KEY='your-secret-api-key'
 
     if args.notebook:
         # Use lightweight structure for big-context tasks
-        project_context = get_project_structure(args.path, ignore_dirs=args.ignore_dirs)
+        project_context = get_project_structure(template_path=args.template, args.path, ignore_dirs=args.ignore_dirs)
     else:
         project_context = get_project_context(
             args.path,
             ignore_dirs=args.ignore_dirs,
-            ignore_exts=args.ignore_exts
+            ignore_exts=args.ignore_exts,
+            template_path=args.template,
         )
 
     if not project_context.strip():
@@ -201,7 +202,8 @@ export OPENAI_API_KEY='your-secret-api-key'
         # Extract datasets and generate LLM-friendly summary
         dataset_context = extract_and_summarize(
             project_path=args.path,
-            ignore_dirs=args.ignore_dirs
+            ignore_dirs=args.,
+            template_path=args.template,
         )
 
         if dataset_context:

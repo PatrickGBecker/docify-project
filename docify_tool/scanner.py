@@ -24,6 +24,7 @@ def get_project_context(root_dir, ignore_dirs=None, ignore_exts=None):
     ignore_dirs = set(ignore_dirs or [])
     ignore_exts = set(ignore_exts or [])
     full_context = []
+    template_path = args.template
 
     for dirpath, dirnames, filenames in os.walk(root_dir):
         # Track ignored dirs
