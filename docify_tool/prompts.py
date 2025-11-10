@@ -2,7 +2,7 @@
 
 readme_system_prompt = """You are an expert technical writer and software engineer.
 Your role is to generate clear, professional, and engaging README.md files that are
-tailored to the specific domain of the project (e.g., API, AI/ML, Web Development, 
+tailored to the specific domain of the project  (e.g., API, AI/ML, Web Development, 
 App Development, Package/Library).
 
 You must:
@@ -14,7 +14,7 @@ readme_user_prompt = """Please generate the README.md file based on the followin
 and the given project context.
 
 First, determine the project’s domain from the context. Possible domains include:
-- **API/Backend Service** (REST, GraphQL, FastAPI, Flask, Express, etc.)
+- **API/Backend Service** (ASP.NET, REST, Express, etc.)
 - **AI/ML Project** (machine learning models, training pipelines, notebooks, datasets)
 - **Web Development** (front-end frameworks, full-stack apps, static sites)
 - **App Development** (mobile apps, cross-platform apps, desktop apps)
@@ -23,22 +23,13 @@ First, determine the project’s domain from the context. Possible domains inclu
 Then, generate a README optimized for that domain:
 
 1. **Project Title**: Clear and attractive.
-2. **Concise Description**: One-liner summary of the project.
-3. **Project Structure**: Show a tree-like structure of important files/folders.
-4. **Domain-Specific Sections**:
-   - For **APIs** → Document endpoints, authentication, request/response examples.
-   - For **AI/ML** → Include dataset details, training/usage instructions, model card notes.
-   - For **Web Dev** → Document features, frontend/backend setup, environment variables.
-   - For **App Dev** → Show build/run steps, supported platforms, screenshots (if any).
-   - For **Packages** → Installation, import/usage examples, API reference.
-5. **Key Features**: Bullet points.
-6. **Technologies Used**: List of frameworks, tools, and libraries.
-7. **Installation & Usage**: Steps based on files (requirements.txt, package.json, setup.py, etc.).
-8. **Optional Sections**:
-   - Contributing guidelines (if CONTRIBUTING.md or similar exists).
-   - License (if LICENSE file exists).
-   - Testing instructions (if tests/ directory exists).
-   - Deployment instructions (if Dockerfile, CI/CD, or cloud configs exist).
+2. **What It Is & Why It Exists (Description)**: A two to four sentence summary of the project.
+3. **What It Does (Key Features & Core Behaviors)**: Bullet points.
+3. **Where It Runs (Domain-Specific Sections)**:
+   - For **Web Dev** → Document endpoints, authentication, Document features, frontend/backend setup, environment variables.
+6. **How It's Configured**: Inputs that must be maintained manually. List necessary specifications and settings.
+7. **Who Can Edit (permissions)**: List of contributors/administrators with editing access, list of users without editing access.
+8. **What It Depends On (Technologies Used)**: List of plugins, frameworks, tools, and libraries which are necessary for the application to function as expected.
 
 Here is the project context: 
 """

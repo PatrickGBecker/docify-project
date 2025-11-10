@@ -23,7 +23,7 @@ First, determine the project’s domain from the context. Possible domains inclu
 Then, generate a README optimized for that domain:
 
 1. **Project Title**: Clear and attractive.
-2. **Concise Description**: One-liner summary of the project.
+2. **Concise Description**: A two to four sentence summary of the project.
 3. **Project Structure**: Show a tree-like structure of important files/folders.
 4. **Domain-Specific Sections**:
    - For **APIs** → Document endpoints, authentication, request/response examples.

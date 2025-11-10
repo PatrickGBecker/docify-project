@@ -54,6 +54,6 @@ include = ["docify_tool*"]
 exclude = ["tests*"]
 
 [project.urls]
-Homepage = "https://github.com/shiwangupadhyay/docify-project"
-Repository = "https://github.com/shiwangupadhyay/docify-project"
-Issues = "https://github.com/shiwangupadhyay/docify-project/issues"
+Homepage = "https://github.com/PatrickGBecker/docify-project"
+Repository = "https://github.com/PatrickGBecker/docify-project"
+Issues = "https://github.com/PatrickGBecker/docify-project/issues"
