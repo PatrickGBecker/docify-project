@@ -1,37 +1,52 @@
+# docify_tool/scanner.py
+
 import os
 import json
+
+# Roughly 3–4 chars per token; 350k chars ~ < 120k tokens -> safe margin
+MAX_TOTAL_CHARS = 350_000
+MAX_FILE_CHARS = 8_000  # max chars per file to include in context
+
 
 def read_notebook_source(file_path):
     """Read Jupyter notebook and return concatenated code + markdown cells."""
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
             nb = json.load(f)
-        code_cells = "\n".join("".join(cell["source"]) 
-                               for cell in nb.get("cells", []) 
-                               if cell.get("cell_type") == "code")
-        markdown_cells = "\n".join("".join(cell["source"]) 
-                                   for cell in nb.get("cells", []) 
-                                   if cell.get("cell_type") == "markdown")
+        code_cells = "\n".join(
+            "".join(cell["source"])
+            for cell in nb.get("cells", [])
+            if cell.get("cell_type") == "code"
+        )
+        markdown_cells = "\n".join(
+            "".join(cell["source"])
+            for cell in nb.get("cells", [])
+            if cell.get("cell_type") == "markdown"
+        )
         return code_cells + "\n" + markdown_cells
     except Exception as e:
         return f"[Error reading notebook: {e}]"
 
+
 def get_project_context(root_dir, ignore_dirs=None, ignore_exts=None):
     """
-    Walks through a directory, gets file structure and content,
+    Walks through a directory, gets file structure and truncated content,
     returns a formatted string including notes about ignored files/directories.
     """
     ignore_dirs = set(ignore_dirs or [])
     ignore_exts = set(ignore_exts or [])
-    full_context = []
-    template_path = args.template
+    full_context: list[str] = []
+    total_chars = 0
 
     for dirpath, dirnames, filenames in os.walk(root_dir):
         # Track ignored dirs
         ignored_dirs_in_path = [d for d in dirnames if d in ignore_dirs]
         for d in ignored_dirs_in_path:
-            full_context.append(f"--- Ignored directory: {os.path.join(dirpath, d)} ---\n")
-        
+            line = f"--- Ignored directory: {os.path.join(dirpath, d)} ---\n"
+            full_context.append(line)
+            total_chars += len(line)
+
+        # Prevent walking into ignored dirs
         dirnames[:] = [d for d in dirnames if d not in ignore_dirs]
 
         for filename in filenames:
@@ -40,46 +55,51 @@ def get_project_context(root_dir, ignore_dirs=None, ignore_exts=None):
 
             # Track ignored files
             if any(filename.endswith(ext) for ext in ignore_exts):
-                full_context.append(f"--- Ignored file: {relative_path} ---\n")
+                line = f"--- Ignored file: {relative_path} ---\n"
+                full_context.append(line)
+                total_chars += len(line)
                 continue
 
-            full_context.append(f"--- File: {relative_path} ---\n")
+            header = f"--- File: {relative_path} ---\n"
+            if total_chars + len(header) > MAX_TOTAL_CHARS:
+                full_context.append(
+                    "\n[...project context truncated: remaining files omitted...]\n"
+                )
+                return "".join(full_context)
+
+            full_context.append(header)
+            total_chars += len(header)
+
             try:
                 if filename.endswith(".ipynb"):
                     content = read_notebook_source(file_path)
                 else:
-                    with open(file_path, 'r', encoding='utf-8', errors='ignore') as file:
+                    with open(file_path, "r", encoding="utf-8", errors="ignore") as file:
                         content = file.read()
-                full_context.append(content)
             except Exception as e:
-                full_context.append(f"[Error reading file: {e}]")
+                content = f"[Error reading file: {e}]"
+
+            # Per-file truncation
+            if len(content) > MAX_FILE_CHARS:
+                content = (
+                    content[:MAX_FILE_CHARS]
+                    + "\n\n[...file truncated for Docify-AI context...]\n"
+                )
+
+            # Check overall cap
+            if total_chars + len(content) > MAX_TOTAL_CHARS:
+                remaining = MAX_TOTAL_CHARS - total_chars
+                if remaining > 0:
+                    full_context.append(content[:remaining])
+                full_context.append(
+                    "\n\n[...project context truncated: size limit reached...]\n"
+                )
+                return "".join(full_context)
+
+            full_context.append(content)
             full_context.append("\n\n")
+            total_chars += len(content) + 2  # +2 for the added "\n\n"
 
     return "".join(full_context)
 
-def get_project_structure(path, ignore_dirs=None):
-    """
-    Returns a textual tree structure of the project directory,
-    showing ignored directories but not traversing into them.
-    """
-    ignore_dirs = set(ignore_dirs or [])
-    tree = []
-
-    for root, dirs, files in os.walk(path):
-        rel = os.path.relpath(root, path)
-        if rel == ".":
-            tree.append(f"{os.path.basename(path)}/")
-        else:
-            tree.append(f"{rel}/")
-
-        # Show files in this directory
-        for f in files:
-            tree.append(f"  {f}")
-
-        # Handle ignored directories: show them but remove from traversal
-        for d in dirs[:]:
-            if d in ignore_dirs:
-                tree.append(f"  {d}/ (ignored)")
-                dirs.remove(d)  # Prevent os.walk from entering it
-
-    return "\n".join(tree)
+    

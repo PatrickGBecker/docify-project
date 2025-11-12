@@ -42,9 +42,6 @@ keywords = [
 
 [tool.setuptools]
 
-[tool.setuptools.packages.find]
-include = ["docify_tool*"]
-
 [tool.setuptools.package-data]
 docify_tool = ["templates/readme.default.md"]
 
