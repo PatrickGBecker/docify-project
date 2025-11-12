@@ -100,6 +100,31 @@ def get_project_context(root_dir, ignore_dirs=None, ignore_exts=None):
             full_context.append("\n\n")
             total_chars += len(content) + 2  # +2 for the added "\n\n"
 
-    return "".join(full_context)
+        return "".join(full_context)
 
-    
+def get_project_structure(path, ignore_dirs=None):
+    """
+    Returns a textual tree structure of the project directory,
+    showing ignored directories but not traversing into them.
+    """
+    ignore_dirs = set(ignore_dirs or [])
+    tree = []
+
+    for root, dirs, files in os.walk(path):
+        rel = os.path.relpath(root, path)
+        if rel == ".":
+            tree.append(f"{os.path.basename(path)}/")
+        else:
+            tree.append(f"{rel}/")
+
+        # Show files in this directory
+        for f in files:
+            tree.append(f"  {f}")
+
+        # Handle ignored directories: show them but remove from traversal
+        for d in dirs[:]:
+            if d in ignore_dirs:
+                tree.append(f"  {d}/ (ignored)")
+                dirs.remove(d)  # Prevent os.walk from entering it
+
+    return "\n".join(tree)
